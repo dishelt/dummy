@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    
+    <context:component-scan base-package="rest" />
+    <context:component-scan base-package="wrappers" />
+    <context:component-scan base-package="persistence" />
+    <mvc:annotation-driven />
+    
+    <context:annotation-config/>
+
+ 
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/dummy"/>
+        <property name="username"  value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <bean id="entityManagerFactory"
+	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+	p:dataSource-ref="dataSource"
+	p:jpaVendorAdapter-ref="jpaAdapter">
+	<property name="loadTimeWeaver">
+          <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>                             
+        <property name="persistenceUnitName" value="persistence"></property>
+    </bean>
+    
+    <bean id="jpaAdapter"
+	class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+	p:database="MYSQL"
+	p:showSql="true"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+	p:entityManagerFactory-ref="entityManagerFactory"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <!-- JSON Support -->
+    <bean name="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+    <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+    
+</beans>
