@@ -48,6 +48,7 @@ public class JPAActivity implements ActivityDAO {
     public void updateActivity(String id, Activity activity) {
         Activity oldActivity = entityManager.find(Activity.class, Integer.parseInt(id));
         oldActivity.setDescription(activity.getDescription());
+        oldActivity.setDeadline(activity.getDeadline());
         entityManager.merge(oldActivity);
     }
     

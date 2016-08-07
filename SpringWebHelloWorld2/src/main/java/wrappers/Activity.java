@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -30,6 +31,9 @@ public class Activity implements Serializable{
     
     @Column(name = "description")
     private String description;
+    
+    @Column(name="deadline")
+    private Date deadline;
 
     public int getId() {
         return id;
@@ -39,6 +43,10 @@ public class Activity implements Serializable{
         return description;
     }
 
+    public Date getDeadline() {
+        return deadline;
+    }        
+
     public void setId(int id) {
         this.id = id;
     }
@@ -47,9 +55,13 @@ public class Activity implements Serializable{
         this.description = description;
     }
 
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }       
+
     @Override
     public String toString() {
-        return "Activity{" + "id=" + id + ", description=" + description + '}';
+        return "Activity{" + "id=" + id + ", description=" + description + ", deadline=" + deadline + '}';
     }        
     
 }

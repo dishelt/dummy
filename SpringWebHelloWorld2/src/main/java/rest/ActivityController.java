@@ -8,12 +8,9 @@ package rest;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +27,16 @@ import wrappers.Activity;
 public class ActivityController {
     
     @Autowired
-    ApplicationContext context;
+    private ApplicationContext context;
 
     @RequestMapping(value = "/getActivities", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    private List<Activity> getActivities() {
-        //ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+    public List<Activity> getActivities() {
         ActivityDAO dao = (ActivityDAO) context.getBean("activityDao");
         return dao.getActivities();
     }
 
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
     public ResponseEntity<String> addActivity(@RequestBody Activity activity) {
-        //ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
         ActivityDAO dao = (ActivityDAO) context.getBean("activityDao");
         dao.saveActivity(activity);
         return new ResponseEntity(HttpStatus.CREATED);
@@ -49,7 +44,6 @@ public class ActivityController {
 
     @RequestMapping(value = "/updateActivity/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Activity> updateActivity(@PathVariable(value = "id") String id, @RequestBody Activity activity) {
-        //ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
         ActivityDAO dao = (ActivityDAO) context.getBean("activityDao");
         dao.updateActivity(id, activity);
         return new ResponseEntity<Activity>(activity, HttpStatus.OK);
@@ -57,7 +51,6 @@ public class ActivityController {
 
     @RequestMapping(value = "/deleteActivity/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteActivity(@PathVariable("id") String id) {
-        //ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
         ActivityDAO dao = (ActivityDAO) context.getBean("activityDao");
         dao.deleteActivity(id);
         return new ResponseEntity(HttpStatus.CREATED);

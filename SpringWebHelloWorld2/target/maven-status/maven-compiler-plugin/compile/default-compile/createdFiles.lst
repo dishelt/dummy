@@ -1,5 +1,4 @@
-rest/ActivityController.class
-wrappers/Activity.class
 persistence/JPAActivity.class
 persistence/ActivityDAO.class
-rest/DataLayerListener.class
+rest/ActivityController.class
+wrappers/Activity.class
